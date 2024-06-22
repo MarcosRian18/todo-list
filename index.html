@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo-List</title>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body onload="startTime()">
+    <div class="container">
+        <div id="hour"></div>
+
+        <div id="addTask">
+            <input id="task" type="text" placeholder="Adicione uma Tarefa">
+            <button id="btnAdd">+</button>
+        </div>
+
+        <div id="task-list">
+            <ul id="taskUl"></ul>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("btnAdd").addEventListener("click", function() {
+        var task = document.getElementById("task").value;
+        if (task.trim() !== "") {
+            var li = document.createElement("li");
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", function() {
+                if (this.checked) {
+                    this.parentElement.remove();
+                }
+            });
+
+            var span = document.createElement("span");
+            span.textContent = task;
+
+            li.appendChild(checkbox);
+            li.appendChild(span);
+            document.getElementById("taskUl").appendChild(li);
+
+            document.getElementById("task").value = "";
+        }
+    });
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        var days = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+        // Adicione um zero na frente de números<10
+        m = checkTime(m);
+        s = checkTime(s);
+        var period = h < 18 ? "AM" : "PM";
+        var day = days[today.getDay()]; // Corrigido: adicionados parênteses
+
+        document.getElementById("hour").innerHTML = h + ":" + m + ":" + s + " - " + period + "<br>" + day;
+        setTimeout(startTime, 500);
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+</script>
+</html>
